@@ -27,7 +27,7 @@ git fetch --tags --all
 
 #VERSION=`git describe --abbrev=0 --tags` # The latest tags on current branch
 
-count_tag=$(git ls-remote --tags origin | wc -l)
+count_tag=$(git ls-remote --tags origin | wc -l) # count how many tags in your git hub
 
 if ((count_tag != 0)); then
 
@@ -41,7 +41,6 @@ if ((count_tag != 0)); then
 	#get number parts and increase last one by 1
 
 	VNUM1=${VERSION_BITS[0]}
-	echo $VNUM1
 	VNUM2=${VERSION_BITS[1]}
 	VNUM3=${VERSION_BITS[2]}
 	VNUM3=$((VNUM3+1))
@@ -65,11 +64,7 @@ fi
 	
 echo "Updating $VERSION to $NEW_TAG"
 
-temp="Release of $NEW_TAG";
-
-#read -p "Do you want keep default body for release?(Y/n)" answer;
-
-read -p "Do you want keep default body for release?(Y/n)"
+read -p "Do you want keep default body for release?(Y/n)" # question that if you want to keep default body or not.
 
 echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -79,7 +74,7 @@ then
 	body=$content;
 else
 	
-	body="This is release for $NEW_TAG";
+	body="This is release for $NEW_TAG on branch $target";
 
 fi
 
@@ -87,7 +82,7 @@ API_JSON=$(printf '{"tag_name": "%s","target_commitish": "%s","name": "Project_%
 
 echo $API_JSON
 
-curl --data "$API_JSON" https://api.github.com/repos/yuki-nguyen/create_release/releases?access_token=133e772d0c947aeeffb8e347d7ee882c7bf09bd7 
+curl --data "$API_JSON" https://api.github.com/repos/yuki-nguyen/create_release/releases?access_token=e17b6dd7272c3c7ba9b540a787430d20e1237a7a # create release
 
 
 

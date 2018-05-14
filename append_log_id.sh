@@ -38,7 +38,7 @@ for line in $(cat $file_log)
 			echo "hahahahahahah"
 		 ##  sed -i 's/$ID_PROJECT/$id/g' $line
 		   str_replace="$name_project=$id"
-		    sed -i 's/"$line"/"$str_replace"/g' $file_log # câu lệnh if này so sánh được rồi nhưng chưa thay thế được.
+		    sed -i 's/'"$line"'/'"$str_replace"'/g' $file_log # câu lệnh if này so sánh được rồi nhưng chưa thay thế được.
 		fi
 	  done
 done

@@ -10,7 +10,7 @@ for origin_url in $file_url
 
 do 
 
-echo "$url" | sed -e 's/"git clone "//'
+url=`echo $string |cut -d " " -f3`
 
 
 name_project=$(basename "$url" ".${url##*.}") # Lấy mỗi tên của project về, bỏ đi các kí tự không cần thiết. Cụ thể nó sẽ lấy được tên là tét_bucket3

@@ -2,7 +2,7 @@
 
 # url=https://Haukk@bitbucket.org/Haukk/test_bitbucket3.git # đường dẫn tới repository để download source từ github về.
 
-# Ý tưởng nếu để 1 đống url vào 1 file, mỗi hàng là 1 url
+# Ý tưởng nếu để 1 đống url vào 1 file, mỗi hàng là 1 câu lệnh git clone url
 
 file_url="/home/tuyet/Git/file_url.txt"
 
@@ -10,7 +10,7 @@ for origin_url in $file_url
 
 do 
 
-url=`echo $string |cut -d " " -f3`
+url=`echo $string |cut -d " " -f3` # Lấy mỗi cái url thôi, bỏ chữ git clone đi
 
 
 name_project=$(basename "$url" ".${url##*.}") # Lấy mỗi tên của project về, bỏ đi các kí tự không cần thiết. Cụ thể nó sẽ lấy được tên là tét_bucket3

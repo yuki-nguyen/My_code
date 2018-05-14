@@ -6,7 +6,7 @@
 
 file_url="/home/tuyet/Git/file_url.txt"
 
-for origin_url in $file_url
+for origin_url in $(cat $file_url)
 
 do 
 

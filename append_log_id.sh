@@ -41,7 +41,9 @@ for line in $(cat $file_log)
 		    sed -i 's/'"$line"'/'"$str_replace"'/g' $file_log # câu lệnh if này so sánh được rồi nhưng chưa thay thế được.
 		    
 		    # sed -i -e 's/'"$var1"'/'"$var2"'/g' /tmp/file.txt
-
+		fi
+		if ! grep -q "$name_project=" $file_log ; then
+		    echo "$name_project=$id" >> $file_log
 		fi
 	  done
 done

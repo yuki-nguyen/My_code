@@ -29,9 +29,9 @@ if [ -d "$path/$name_project" ]; then rm -rf $path/$name_project; fi # thwujc hi
 git clone $url --quiet # Kiểm tra coi clone về có thành công không
 success=$?
 if [[ $success -eq 0 ]]; then
-		echo "Repository test_bitbucket3 successfully cloned."
+		echo "Repository $name_project successfully cloned."
 	else
-        	echo "Something went wrong clone test_bitbucket3, clone fail!"
+        	echo "Something went wrong clone $name_project, clone fail!"
         fi
 
 git log --oneline --pretty=format:%h -n 1 > $file_log_ID # ghi ID của project vào đây

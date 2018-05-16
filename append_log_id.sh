@@ -8,8 +8,9 @@ file_url="/home/tuyet/Git/file_url.txt"
 
 while read -r origin_url # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
 
-do 
+do
 
+echo $origin_url
 url=`echo $origin_url |cut -d " " -f3` # Lấy mỗi cái url thôi, bỏ chữ git clone đi
 
 
@@ -21,7 +22,7 @@ cd $path
 file_log_ID="$path/$name_project/log_ID_$name_project.txt" # file này chứa id của nó khi git log oneline về
 
 file_log="$path/logID.txt" # file này chứ name và id cần đối chiếu để thay thế
-
+File_for_customer="$path/For_customer.txt"
 
 if [ -d "$path/$name_project" ]; then rm -rf $path/$name_project; fi # thwujc hiện xóa thư mục trùng tên với project đi, vì nếu trùng sẽ k clone về được nữa.
 
@@ -33,29 +34,42 @@ if [[ $success -eq 0 ]]; then
 	else
         	echo "Something went wrong clone $name_project, clone fail!"
         fi
-
+cd $name_project
 git log --oneline --pretty=format:%h -n 1 > $file_log_ID # ghi ID của project vào đây
+git log --pretty=format:'%h %<(20)%an %s'| awk -F '|' '{ printf "%s %-20s %s\n", $1, $2, $3 }' > temp_log.txt
+id=$(cat $file_log_ID) # id mới nhất vừa clone về
 
+# Xuất thông tin cho khách hành coi
+echo "This is information for $name_project: \n" >> $File_for_customer
+while read -r line_temp
+	do
+	id_old=`echo $line_temp|cut -d " " -f1`
+	if [[ $id_old != id ]]; then
+	      echo $line_temp >> $File_for_customer
+	else
+	       break
+      fi
+
+done <"temp_log.txt"
+
+# Cập nhật id mới nhất vào file l
 for line in $(cat $file_log)
 	do
 	  NAME_PROJECT=$(echo $line|awk -F '=' '{print $1}') # Lấy name của project trong file đối chiếu
 	  ID_PROJECT=$(echo $line|awk -F '=' '{print $2}') # Lấy ID của project trong file đối chiếu
 	  echo $NAME_PROJECT
 
-	for id in $(cat $file_log_ID)
-	  do
-	  # so sánh nếu name project giống nhau và id chúng khác nhau thì thay id vô, không thì thêm vào cả name và id vào cuối file
-		if [[( "$name_project" = "$NAME_PROJECT") && ("$ID_PROJECT" != "$id")]];then 
-			echo "hahahahahahah"
+     if [[( "$name_project" = "$NAME_PROJECT") && ("$ID_PROJECT" != "$id")]];then
 		 ##  sed -i 's/$ID_PROJECT/$id/g' $line
 		   str_replace="$name_project=$id"
 		    sed -i 's/'"$line"'/'"$str_replace"'/g' $file_log # câu lệnh if này so sánh được rồi nhưng chưa thay thế được.
-		    
+
 		    # sed -i -e 's/'"$var1"'/'"$var2"'/g' /tmp/file.txt
 		fi
 		if ! grep -q "$name_project=" $file_log ; then
 		    echo "$name_project=$id" >> $file_log
 		fi
-	  done
-done
+    done
+rm -rf temp_log.txt
+rm -rf $file_log_ID
 done < "$file_url"

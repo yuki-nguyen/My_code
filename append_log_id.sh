@@ -48,7 +48,7 @@ echo "This is information for $name_project:" >> $File_for_customer
 while read -r line_temp
 	do
 	id_old=`echo $line_temp|cut -d " " -f1`
-	if [[ $id_old != id ]]; then
+	if [[ $id_old != $id ]]; then
 	      echo $line_temp >> $File_for_customer
 	else
 	       break

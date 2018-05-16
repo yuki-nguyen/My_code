@@ -51,8 +51,9 @@ while read -r line_temp
 	if [[ $id_old != $id ]]; then
 	      echo $line_temp >> $File_for_customer
 	else
+	       echo "$id_old is nearest id that you commit" >> $File_for_customer
 	       break
-      fi
+    fi
 
 done <"temp_log.txt"
 

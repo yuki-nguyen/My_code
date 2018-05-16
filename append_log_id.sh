@@ -2,9 +2,15 @@
 
 # url=https://Haukk@bitbucket.org/Haukk/test_bitbucket3.git # đường dẫn tới repository để download source từ github về.
 
+path="/home/tuyet/Git" # Đường dẫn tới thư mục mà tại đó ta thực hiện lệnh git clone
+
+File_for_customer="$path/For_customer.txt" # f
+rm -rf $File_for_customer
+
 # Ý tưởng nếu để 1 đống url vào 1 file, mỗi hàng là 1 câu lệnh git clone url
 
 file_url="/home/tuyet/Git/file_url.txt"
+
 
 while read -r origin_url # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
 
@@ -17,12 +23,12 @@ url=`echo $origin_url |cut -d " " -f3` # Lấy mỗi cái url thôi, bỏ chữ 
 name_project=$(basename "$url" ".${url##*.}") # Lấy mỗi tên của project về, bỏ đi các kí tự không cần thiết. Cụ thể nó sẽ lấy được tên là tét_bucket3
 echo $name_project
 
-path="/home/tuyet/Git" # Đường dẫn tới thư mục mà tại đó ta thực hiện lệnh git clone
+
 cd $path
 file_log_ID="$path/$name_project/log_ID_$name_project.txt" # file này chứa id của nó khi git log oneline về
 
 file_log="$path/logID.txt" # file này chứ name và id cần đối chiếu để thay thế
-File_for_customer="$path/For_customer.txt"
+
 
 if [ -d "$path/$name_project" ]; then rm -rf $path/$name_project; fi # thwujc hiện xóa thư mục trùng tên với project đi, vì nếu trùng sẽ k clone về được nữa.
 
@@ -38,9 +44,7 @@ cd $name_project
 git log --oneline --pretty=format:%h -n 1 > $file_log_ID # ghi ID của project vào đây
 git log --pretty=format:'%h %<(20)%an %s'| awk -F '|' '{ printf "%s %-20s %s\n", $1, $2, $3 }' > temp_log.txt
 id=$(cat $file_log_ID) # id mới nhất vừa clone về
-
-# Xuất thông tin cho khách hành coi
-echo "This is information for $name_project: \n" >> $File_for_customer
+echo "This is information for $name_project:" >> $File_for_customer
 while read -r line_temp
 	do
 	id_old=`echo $line_temp|cut -d " " -f1`
@@ -52,7 +56,6 @@ while read -r line_temp
 
 done <"temp_log.txt"
 
-# Cập nhật id mới nhất vào file l
 for line in $(cat $file_log)
 	do
 	  NAME_PROJECT=$(echo $line|awk -F '=' '{print $1}') # Lấy name của project trong file đối chiếu

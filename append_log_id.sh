@@ -6,7 +6,7 @@
 
 file_url="/home/tuyet/Git/file_url.txt"
 
-for origin_url in $(cat $file_url) # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
+while read -r origin_url # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
 
 do 
 
@@ -58,4 +58,4 @@ for line in $(cat $file_log)
 		fi
 	  done
 done
-done 
+done < "$file_url"

@@ -50,19 +50,30 @@ git log --oneline --pretty=format:%h -n 1 > $file_log_ID # ghi ID của project 
 git log --pretty=format:'%h %<(20)%an %s'| awk -F '|' '{ printf "%s %-20s %s\n", $1, $2, $3 }' > temp_log.txt
 
 id_root=`grep "$name_project=" $file_log | cut -d"=" -f2` # id làm mốc để in từ mới nhất tới id này
+count=0
+echo "
 
-echo "This is information for $name_project:" >> $File_for_customer
+=======================================================
+++                                                   ++
+++    This is information for $name_project        ++
+========================****===========================
+
+
+ " >> $File_for_customer
 while read -r line_temp
 	do
 	id_old=`echo $line_temp|cut -d " " -f1`
 	if [[ $id_old != $id_root ]]; then
 
-	      git log -p $id_old >> $File_for_customer
+	      # git log -p $id_old >> $File_for_customer
+	      count=`expr $count + 1 `
 	else
-	       echo "$id_old is nearest id that you commit" >> $File_for_customer
-	       git log -p $id_old >> $File_for_customer
+	       echo "($id_old is nearest id that you commit.)" >> $File_for_customer
+	       git log -p -1 >> $File_for_customer
 	       break
     fi
+
+git log -p -$count >> $File_for_customer
 
 done <"temp_log.txt"
 id=$(cat $file_log_ID)
@@ -87,5 +98,3 @@ for line in $(cat $file_log)
 rm -rf temp_log.txt
 rm -rf $file_log_ID
 done < "$file_url"
-
-

@@ -5,12 +5,12 @@
 path="/home/tuyet/Git" # Đường dẫn tới thư mục mà tại đó ta thực hiện lệnh git clone
 
 File_for_customer="$path/For_customer.txt" # f
-rm -rf $File_for_customer
+rm -rf $File_for_customer 
 
 # Ý tưởng nếu để 1 đống url vào 1 file, mỗi hàng là 1 câu lệnh git clone url
 
 file_url="/home/tuyet/Git/file_url.txt"
-
+sed -i '/^$/d' $file_url # Xóa tất cả các dòng trắng có tồn tại trong file 
 
 while IFS= read -r origin_url|| [ -n "$origin_url" ];  # Thay cho while read -r origin_url # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
 

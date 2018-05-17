@@ -56,10 +56,11 @@ while read -r line_temp
 	do
 	id_old=`echo $line_temp|cut -d " " -f1`
 	if [[ $id_old != $id_root ]]; then
-	      echo $line_temp >> $File_for_customer
+
+	      git log -p $id_old >> $File_for_customer
 	else
-	       # echo "$id_old is nearest id that you commit" >> $File_for_customer
-	       echo $line_temp >> $File_for_customer
+	       echo "$id_old is nearest id that you commit" >> $File_for_customer
+	       git log -p $id_old >> $File_for_customer
 	       break
     fi
 
@@ -67,11 +68,12 @@ done <"temp_log.txt"
 id=$(cat $file_log_ID)
 for line in $(cat $file_log)
 	do
-	  NAME_PROJECT=$(echo $line|awk -F '=' '{print $1}') # Lấy name của project trong file đối chiếu
-	  ID_PROJECT=$(echo $line|awk -F '=' '{print $2}') # Lấy ID của project trong file đối chiếu
-	  echo $NAME_PROJECT
 
-     if [[( "$name_project" = "$NAME_PROJECT") && ("$ID_PROJECT" != "$id")]];then
+
+	        NAME_PROJECT=$(echo $line|awk -F '=' '{print $1}') # Lấy name của project trong file đối chiếu
+	        ID_PROJECT=$(echo $line|awk -F '=' '{print $2}') # Lấy ID của project trong file đối chiếu
+
+        if [[( "$name_project" = "$NAME_PROJECT") && ("$ID_PROJECT" != "$id")]];then
 		 ##  sed -i 's/$ID_PROJECT/$id/g' $line
 		   str_replace="$name_project=$id"
 		    sed -i 's/'"$line"'/'"$str_replace"'/g' $file_log # câu lệnh if này so sánh được rồi nhưng chưa thay thế được.
@@ -85,3 +87,5 @@ for line in $(cat $file_log)
 rm -rf temp_log.txt
 rm -rf $file_log_ID
 done < "$file_url"
+
+

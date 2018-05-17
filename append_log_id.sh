@@ -12,7 +12,7 @@ rm -rf $File_for_customer
 file_url="/home/tuyet/Git/file_url.txt"
 
 
-while read -r origin_url # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
+while IFS= read -r origin_url|| [ -n "$origin_url" ];  # Thay cho while read -r origin_url # Đọc file này để đọc từng hàng trong file, mỗi câu lệnh git clone là 1 giá trị
 
 do
 
@@ -29,6 +29,10 @@ file_log_ID="$path/$name_project/log_ID_$name_project.txt" # file này chứa id
 
 file_log="$path/logID.txt" # file này chứ name và id cần đối chiếu để thay thế
 
+if [ ! -f "$file_log" ]
+then
+	echo "name=id">$file_log
+fi
 
 if [ -d "$path/$name_project" ]; then rm -rf $path/$name_project; fi # thwujc hiện xóa thư mục trùng tên với project đi, vì nếu trùng sẽ k clone về được nữa.
 

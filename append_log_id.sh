@@ -43,6 +43,7 @@ if [[ $success -eq 0 ]]; then
 		echo "Repository $name_project successfully cloned."
 	else
         	echo "Something went wrong clone $name_project, clone fail!"
+		continue
         fi
 cd $name_project
 git log --oneline --pretty=format:%h -n 1 > $file_log_ID # ghi ID của project vào đây

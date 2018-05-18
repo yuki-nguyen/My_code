@@ -68,12 +68,15 @@ while read -r line_temp
 	      # git log -p $id_old >> $File_for_customer
 	      count=`expr $count + 1 `
 	else
-	       echo "($id_old is nearest id that you commit.)" >> $File_for_customer
-	       git log -p -1 >> $File_for_customer
+	       count=`expr $count + 0 `
+	       if [[ $count == 0 ]]; then
+	           echo "Have no change with last commit" >> $File_for_customer
+            fi
 	       break
     fi
-
-git log -p -$count >> $File_for_customer
+if [[ $count > 0 ]]; then
+    git log -p -$count >> $File_for_customer
+fi
 
 done <"temp_log.txt"
 id=$(cat $file_log_ID)
